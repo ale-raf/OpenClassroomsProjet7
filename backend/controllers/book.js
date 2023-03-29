@@ -95,14 +95,16 @@ exports.rateBook = (req, res) => {
             if (ratings.find(rating => rating.userId === req.auth.userId)) {
                 res.status(401).json({ message : 'Vous avez déjà attribué une note à ce livre' });
             } else {
-                // const average = (ratings.map(rating => rating.grade).reduce((a, b) => a + b) / ratings.length).toFixed(1);
+                const updatedRatings = [...ratings, ...bookRating];
                 Book.findByIdAndUpdate(
                     { _id: req.params.id },
                     { $push: { ratings: { userId: bookRating.userId, grade: bookRating.rating }}},
                     // { $set: { averageRating: calcAverage(ratings.push({ userId: bookRating.userId, grade: bookRating.rating }))}},
-                    { $set: { averageRating: calcAverage(ratings)}},
+                    { $set: { averageRating: calcAverage(updatedRatings) }},
                     { new: true }
                 )
+                    // .aggregate([{ $group: { _id: req.params.id, averageRating: { $avg: updatedRatings }}}])
+                    // .aggregate([{ $unwind: { path: "$ratings" }}, { $unwind: { path: "$ratings.grade" }}, { $group: { _id: "$req.params.id", averageRating: { $avg: updatedRatings }}}])
                     .then((book) => res.status(200).json(book))
                     .catch(error => res.status(401).json({ error }));
             }
