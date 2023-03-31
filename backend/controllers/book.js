@@ -95,16 +95,20 @@ exports.rateBook = (req, res) => {
             if (ratings.find(rating => rating.userId === req.auth.userId)) {
                 res.status(401).json({ message : 'Vous avez déjà attribué une note à ce livre' });
             } else {
-                const updatedRatings = [...ratings, ...bookRating];
+                let updatedRatings = [];
+                // on parcourt ratings pour pousser chaque note vers le tableau vide initialisé juste au-dessus
+                ratings.forEach(rating => {
+                    updatedRatings.push(rating)
+                });
+                // nouvelle note saisie lors de la requête est poussée à son tour vers le tableau updatedRatings
+                updatedRatings.push({userId: bookRating.userId, grade: bookRating.rating});
+                // calcul de la moyenne des notes enregistrées sur le livre présent
+                const updatedAverage = calcAverage(updatedRatings);
                 Book.findByIdAndUpdate(
                     { _id: req.params.id },
-                    { $push: { ratings: { userId: bookRating.userId, grade: bookRating.rating }}},
-                    // { $set: { averageRating: calcAverage(ratings.push({ userId: bookRating.userId, grade: bookRating.rating }))}},
-                    { $set: { averageRating: calcAverage(updatedRatings) }},
+                    { $push: { ratings: { userId: bookRating.userId, grade: bookRating.rating }}, $set: { averageRating: updatedAverage }},
                     { new: true }
                 )
-                    // .aggregate([{ $group: { _id: req.params.id, averageRating: { $avg: updatedRatings }}}])
-                    // .aggregate([{ $unwind: { path: "$ratings" }}, { $unwind: { path: "$ratings.grade" }}, { $group: { _id: "$req.params.id", averageRating: { $avg: updatedRatings }}}])
                     .then((book) => res.status(200).json(book))
                     .catch(error => res.status(401).json({ error }));
             }
