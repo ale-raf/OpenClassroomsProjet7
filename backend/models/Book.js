@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// schéma de données pour l'objet Book
 const bookSchema = mongoose.Schema({
     userId: { type: String, required: true },
     title: { type: String, required: true },
@@ -16,4 +17,5 @@ const bookSchema = mongoose.Schema({
     averageRating: { type: Number, required: true },
 });
 
+// schéma converti en modèle pour l'exploitation
 module.exports = mongoose.model('Book', bookSchema);

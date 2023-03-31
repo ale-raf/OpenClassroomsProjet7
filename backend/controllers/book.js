@@ -117,6 +117,8 @@ exports.rateBook = (req, res) => {
 };
 
 function calcAverage(array) {
+    // on retourne un nouveau tableau composé des seules notes (grade) que l'on réduit pour obtenir la somme des valeurs
+    // la somme obtenue est divisée par le nombre de valeurs présentes dans le tableau d'origine
     const averageResult = (array.map(rating => rating.grade).reduce((acc, currentRating) => acc + currentRating) / array.length).toFixed(1);
     return averageResult;
 }
