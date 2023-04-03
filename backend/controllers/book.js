@@ -1,6 +1,7 @@
 const Book = require("../models/Book");
 const fs = require("fs");
 
+// CREATE
 exports.createBook = (req, res, next) => {
     const bookObject = JSON.parse(req.body.book);
     delete bookObject._id;
@@ -8,6 +9,7 @@ exports.createBook = (req, res, next) => {
     const book = new Book({
         ...bookObject,
         userId: req.auth.userId,
+        // reconstruction de l'URL complète du fichier transmis
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
     });
     book
@@ -16,6 +18,7 @@ exports.createBook = (req, res, next) => {
         .catch((error) => res.status(400).json({ error }));
 };
 
+// UPDATE
 exports.editBook = (req, res, next) => {
     const bookObject = req.file
         ? {
@@ -42,6 +45,7 @@ exports.editBook = (req, res, next) => {
         });
 };
 
+// DELETE
 exports.deleteBook = (req, res, next) => {
     Book.findOne({ _id: req.params.id })
         .then((book) => {
@@ -63,6 +67,7 @@ exports.deleteBook = (req, res, next) => {
         });
 };
 
+// READ
 exports.getOneBook = (req, res, next) => {
     Book.findOne({ _id: req.params.id })
         .then((book) => res.status(200).json(book))
@@ -97,9 +102,7 @@ exports.rateBook = (req, res) => {
             } else {
                 let updatedRatings = [];
                 // on parcourt ratings pour pousser chaque note vers le tableau vide initialisé juste au-dessus
-                ratings.forEach(rating => {
-                    updatedRatings.push(rating)
-                });
+                ratings.forEach(rating => updatedRatings.push(rating));
                 // nouvelle note saisie lors de la requête est poussée à son tour vers le tableau updatedRatings
                 updatedRatings.push({userId: bookRating.userId, grade: bookRating.rating});
                 // calcul de la moyenne des notes enregistrées sur le livre présent

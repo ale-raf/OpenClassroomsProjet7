@@ -4,13 +4,13 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 exports.signup = (req, res, next) => {
+    // hachage appliqué au mot de passe créé pour éviter un stockage en clair
     bcrypt.hash(req.body.password, 10)
         .then((hash) => {
             const user = new User({
                 email: req.body.email,
                 password: hash
         });
-        console.log(user);
         user.save()
             .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
             .catch(error => res.status(400).json({ error }));
@@ -24,6 +24,7 @@ exports.login = (req, res, next) => {
             if (!user) {
                 return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
             }
+            // comparaison du mot de passe saisi avec le hash enregistré dans la base de données
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) {

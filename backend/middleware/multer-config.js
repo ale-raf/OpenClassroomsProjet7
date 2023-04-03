@@ -6,6 +6,7 @@ const MIME_TYPES = {
     'image/png': 'png'
 };
 
+// configuration du chemin et du nom des fichiers entrants
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'images');
@@ -17,4 +18,5 @@ const storage = multer.diskStorage({
     }
 });
 
+// fichiers capturés et enregistrés au système configuré
 module.exports = multer({storage: storage}).single('image');
