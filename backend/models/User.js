@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-// const uniqueValidator = require('mongoose-unique-validator');
-
 ///// Le plugin est désactivé car sa version actuelle semble incompatible avec la configuration du projet entraînant des erreurs /////
+
+// const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },

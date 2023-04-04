@@ -1,3 +1,4 @@
+// package qui permet de gérer les fichiers entrants lors des requêtes HTTP
 const multer = require('multer');
 
 const MIME_TYPES = {
