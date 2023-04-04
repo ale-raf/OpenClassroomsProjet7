@@ -4,12 +4,12 @@
 
 ### Connexion au serveur
 #### Accès au dossier backend
-* cd backend
+`cd backend`
 #### Liaison avec la base de données MongoDB
-* npm run dev
+`npm run dev`
 
 ### Lancement de l'application
 #### Accès au dossier frontend
-* cd frontend
+`cd frontend`
 #### Ouverture du projet dans le navigateur
-* npm start
+`npm start`
