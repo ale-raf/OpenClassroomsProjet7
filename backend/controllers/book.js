@@ -1,4 +1,5 @@
 const Book = require("../models/Book");
+// file system
 const fs = require("fs");
 
 // CREATE
@@ -91,9 +92,9 @@ exports.getBestBooks = (req, res, next) => {
 exports.rateBook = (req, res) => {
     const bookRating = req.body;
     delete bookRating._userId;
-    // if (bookRating.userId != req.auth.userId) {
-    //     res.status(401).json({ message: "Not authorized" });
-    // }
+    if (bookRating.userId != req.auth.userId) {
+        res.status(401).json({ message: "Not authorized" });
+    }
     Book.findOne({ _id: req.params.id })
     .then((book) => {
             const ratings = book.ratings;
