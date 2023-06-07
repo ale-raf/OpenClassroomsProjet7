@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 
+// importation des routeurs
 const bookRoutes = require('./routes/book');
 const userRoutes = require('./routes/user');
 
@@ -32,7 +33,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-// on attribue à chaque route un middleware particulier
+// on enregistre nos routeurs en fonction des demandes effectuées vers chaque route
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', userRoutes);

@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  },
+  "scripts": {
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d build"
+  },
+  "homepage": "http://ale-raf.github.io/OpenClassroomsProjet7"
+}
